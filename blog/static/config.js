@@ -8,6 +8,7 @@ KindEditor.ready(function(K){
 		uploadJson:'/uplaod_file/',
 		extraFileUploadParams: {"csrfmiddlewaretoken": $("[name='csrfmiddlewaretoken']").val(),'post_id':window.location.pathname.split('/')[4]},
 		filePostName: 'upload_img',
+		filterMode: false,
 		 
 		
 		},

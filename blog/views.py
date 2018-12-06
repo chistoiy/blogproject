@@ -23,7 +23,7 @@ class IndexView(ListView):
 	template_name = 'blog/index.html'
 	context_object_name = 'post_list'
 	 
-	paginate_by = 2
+	paginate_by = 10
 	s="""
 在视图函数中将模板变量传递给模板是通过给 render 函数的 context 参数传递一个字典实现的，
 例如 render(request, 'blog/index.html', context={'post_list': post_list})，
@@ -304,7 +304,7 @@ import markdown
 
 from comments.forms import CommentForm
 
- 
+''' 
 def detail(request,pk):
 	print(pk,type(pk))
 	post = get_object_or_404(Post,pk=pk)  #此函数为验证pk是否在Post表存在，存在则返回数据，否则404回值
@@ -327,6 +327,47 @@ def detail(request,pk):
                }
 	
 	return render(request,'blog/detail.html',context=context)
+'''
+from markdown.extensions.toc import TocExtension
+
+from django.utils.text import slugify
+def detail(request,pk):
+	print(pk,type(pk))
+	post = get_object_or_404(Post,pk=pk)  #此函数为验证pk是否在Post表存在，存在则返回数据，否则404回值
+	post.increase_views()
+	print(post.body)
+	md = markdown.Markdown(extensions=[
+		'markdown.extensions.extra',     #
+		'markdown.extensions.codehilite',#语法高亮
+		TocExtension(slugify=slugify)	,	#自动生成目录
+	])
+	post.body =md.convert(post.body)
+	post.toc=md.toc
+	print(post.toc)
+	form = CommentForm()
+    # 获取这篇 post 下的全部评论
+	comment_list = post.comment_set.all()
+
+	# 将文章、表单、以及文章下的评论列表作为模板变量传给 detail.html 模板，以便渲染相应数据。
+	context = {'post': post,
+               'form': form,
+               'comment_list': comment_list
+               }
+	
+	return render(request,'blog/detail.html',context=context)
+from django.db.models import Q
+def search_base(request):
+	q = request.GET.get('q')
+	error_msg = ''
+
+	if not q:
+		error_msg = "请输入关键词"
+		return render(request, 'blog/index.html', {'error_msg': error_msg})
+	print('#######aaaaaaaaaa')
+	post_list = Post.objects.filter(Q(title__icontains=q) | Q(body__icontains=q))
+	return render(request, 'blog/index.html', {'error_msg': error_msg,'post_list': post_list})	
+
+
 	
 #暂未通过，没想明白 
 from django.views.generic import DetailView	

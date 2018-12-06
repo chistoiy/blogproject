@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+	'haystack',
 	'blog',
 	'comments',
 ]
@@ -122,9 +123,18 @@ USE_TZ = True
 STATIC_URL = '/static/'
 #STATIC_ROOT = 
 STATICFILES_DIRS = [
-						os.path.join(BASE_DIR, 'blog','static'),os.path.join(BASE_DIR,'static'),
+						os.path.join(BASE_DIR,'static'),os.path.join(BASE_DIR, 'blog','static'),
 ]
 #MEDIA_URL = "/media/"   # 媒体文件别名(相对路径) 和 绝对路径
 #MEDIA_ROOT = (
 #    os.path.join(BASE_DIR, 'blog/media/')
 #)
+
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'blog.whoosh_cn_backend.WhooshEngine',
+        'PATH': os.path.join(BASE_DIR, 'whoosh_index'),
+    },
+}
+HAYSTACK_SEARCH_RESULTS_PER_PAGE = 10
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'

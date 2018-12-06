@@ -11,4 +11,6 @@ urlpatterns = [
 	url(r'^tag/(?P<pk>[0-9]+)/$', views.TagView.as_view(),name='tag'),
 	 
 	url(r'^uplaod_file/',views.upload_img),
+	
 ]
+#url(r'^search/$', views.search, name='search'),
