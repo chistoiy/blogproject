@@ -52,3 +52,16 @@ class Post(models.Model):
 
         # 调用父类的 save 方法将数据保存到数据库中
 		super(Post, self).save(*args, **kwargs)
+	
+	def delete(self,*args,**kwargs):
+		#print('测试删除函数的重载！！！！！！！！！！')
+		#print(self.id)
+		
+		super(Post, self).delete(*args, **kwargs)
+		 
+		import os
+		import shutil
+		path = 'static/media/%s/'%self.id
+		if os.path.exists(path):
+			shutil.rmtree(path)
+			

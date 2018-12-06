@@ -309,6 +309,7 @@ def detail(request,pk):
 	print(pk,type(pk))
 	post = get_object_or_404(Post,pk=pk)  #此函数为验证pk是否在Post表存在，存在则返回数据，否则404回值
 	post.increase_views()
+	print(post.body)
 	post.body = markdown.markdown(post.body,extensions=[
 		'markdown.extensions.extra',     #
 		'markdown.extensions.codehilite',#语法高亮
@@ -403,3 +404,30 @@ class TagView(ListView):
 	def get_queryset(self):
 		tag = get_object_or_404(Tag, pk=self.kwargs.get('pk'))
 		return super(TagView, self).get_queryset().filter(tags=tag)
+from django.conf import settings
+import os
+from blogproject import settings
+def upload_img(request):
+	print(request.FILES)
+	obj=request.FILES.get('upload_img')
+	post_id = request.POST.get('post_id')#文章的id
+	path = 'static/media/'
+	path = os.path.join(path,post_id)
+	if not os.path.exists(path):
+		os.mkdir(path)
+
+	path = os.path.join(path,obj.name).replace('\\','/')
+	with open(path,'wb') as f_write: 
+		for chunk in obj.chunks(): 
+			f_write.write(chunk)
+     
+	upload_response={
+        # 第一个参数表示没有错误，返回0
+		'error':0,
+        # 这个是路径， 路径加上 obj.name的具体形式返回回去，HTML端就可以通过url来查看图片（因为存放在MEDIA文件夹中，之前配置好了他可以通过url访问，所以能在页端查看）
+		'url':'/static/media/%s/%s'%(post_id,obj.name)
+		 
+	}
+	print('it is ok ')
+	import json
+	return HttpResponse(json.dumps(upload_response))
