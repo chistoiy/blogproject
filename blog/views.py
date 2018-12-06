@@ -411,7 +411,7 @@ def upload_img(request):
 	print(request.FILES)
 	obj=request.FILES.get('upload_img')
 	post_id = request.POST.get('post_id')#文章的id
-	path = 'static/media/'
+	path = 'static/media/article/'
 	path = os.path.join(path,post_id)
 	if not os.path.exists(path):
 		os.mkdir(path)
@@ -425,7 +425,7 @@ def upload_img(request):
         # 第一个参数表示没有错误，返回0
 		'error':0,
         # 这个是路径， 路径加上 obj.name的具体形式返回回去，HTML端就可以通过url来查看图片（因为存放在MEDIA文件夹中，之前配置好了他可以通过url访问，所以能在页端查看）
-		'url':'/static/media/%s/%s'%(post_id,obj.name)
+		'url':'/static/media/article/%s/%s'%(post_id,obj.name)
 		 
 	}
 	print('it is ok ')

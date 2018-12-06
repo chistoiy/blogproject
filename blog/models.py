@@ -61,7 +61,7 @@ class Post(models.Model):
 		 
 		import os
 		import shutil
-		path = 'static/media/%s/'%self.id
+		path = 'static/media/article/%s/'%self.id
 		if os.path.exists(path):
 			shutil.rmtree(path)
 			
