@@ -2,6 +2,8 @@
 *.sqlite3
 migrations
 article
+whoosh_index
+
 
 
 # Byte-compiled / optimized / DLL files

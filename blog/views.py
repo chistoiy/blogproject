@@ -163,7 +163,7 @@ def index(request):
 	except EmptyPage:
         # 如果用户请求的页码号超过了最大页码号，显示最后一页
 		posts = paginator.page(paginator.num_pages)
-	print(posts,type(posts))
+	#print(posts,type(posts))
 
 	return render(request,'blog/index.html',context={'post_list':posts,})
 	
@@ -306,10 +306,10 @@ from comments.forms import CommentForm
 
 ''' 
 def detail(request,pk):
-	print(pk,type(pk))
+	#print(pk,type(pk))
 	post = get_object_or_404(Post,pk=pk)  #此函数为验证pk是否在Post表存在，存在则返回数据，否则404回值
 	post.increase_views()
-	print(post.body)
+	#print(post.body)
 	post.body = markdown.markdown(post.body,extensions=[
 		'markdown.extensions.extra',     #
 		'markdown.extensions.codehilite',#语法高亮
@@ -332,10 +332,10 @@ from markdown.extensions.toc import TocExtension
 
 from django.utils.text import slugify
 def detail(request,pk):
-	print(pk,type(pk))
+	#print(pk,type(pk))
 	post = get_object_or_404(Post,pk=pk)  #此函数为验证pk是否在Post表存在，存在则返回数据，否则404回值
 	post.increase_views()
-	print(post.body)
+	#print(post.body)
 	md = markdown.Markdown(extensions=[
 		'markdown.extensions.extra',     #
 		'markdown.extensions.codehilite',#语法高亮
@@ -343,7 +343,7 @@ def detail(request,pk):
 	])
 	post.body =md.convert(post.body)
 	post.toc=md.toc
-	print(post.toc)
+	#print(post.toc)
 	form = CommentForm()
     # 获取这篇 post 下的全部评论
 	comment_list = post.comment_set.all()
@@ -449,7 +449,7 @@ from django.conf import settings
 import os
 from blogproject import settings
 def upload_img(request):
-	print(request.FILES)
+	#print(request.FILES)
 	obj=request.FILES.get('upload_img')
 	post_id = request.POST.get('post_id')#文章的id
 	path = 'static/media/article/'
