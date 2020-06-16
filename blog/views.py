@@ -452,8 +452,9 @@ def upload_img(request):
 	#print(request.FILES)
 	obj=request.FILES.get('upload_img')
 	post_id = request.POST.get('post_id')#文章的id
-	path = 'static/media/article/'
-	path = os.path.join(path,post_id)
+	path = ['static','media','article']
+	path = os.path.join(*path)
+	path = os.path.join(os.getcwd(), path, post_id)
 	if not os.path.exists(path):
 		os.mkdir(path)
 

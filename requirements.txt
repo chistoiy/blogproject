@@ -4,3 +4,4 @@ jieba==0.39
 Markdown==3.0.1
 pytz==2018.7
 Whoosh==2.7.4
+gevent==20.6.1
